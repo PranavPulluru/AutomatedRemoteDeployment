@@ -1,0 +1,40 @@
+#!/bin/bash
+
+# Goal latitude and longitude
+GOAL_LAT=37.7749    # Replace with your target latitude
+GOAL_LONG=-122.4194 # Replace with your target longitude
+TOLERANCE=0.0001    # Tolerance for comparing lat/long (adjust as needed)
+
+# Function to get current GPS location
+get_current_location() {
+    # Here, assume GPS output is available in a file `/tmp/gps_data`
+    # Format: LAT,LONG
+    cat /tmp/gps_data | awk -F',' '{print $1,$2}'
+}
+
+# Function to compare two floating-point numbers
+compare_floats() {
+    awk -v val1="$1" -v val2="$2" -v tol="$3" \
+        'BEGIN { exit !(val1 >= val2 - tol && val1 <= val2 + tol) }'
+}
+
+# Main loop
+while true; do
+    # Get current GPS coordinates
+    read CURRENT_LAT CURRENT_LONG <<< "$(get_current_location)"
+
+    echo "Current location: LAT=$CURRENT_LAT, LONG=$CURRENT_LONG"
+
+    # Check if the current location is within the tolerance of the goal
+    compare_floats "$CURRENT_LAT" "$GOAL_LAT" "$TOLERANCE" && LAT_MATCH=true || LAT_MATCH=false
+    compare_floats "$CURRENT_LONG" "$GOAL_LONG" "$TOLERANCE" && LONG_MATCH=true || LONG_MATCH=false
+
+    if [[ "$LAT_MATCH" == true && "$LONG_MATCH" == true ]]; then
+        echo "Goal location reached! Starting srsRAN..."
+        sudo srsepc  # Replace this with your srsRAN startup command
+        break
+    fi
+
+    echo "Goal not reached yet. Retrying in 10 seconds..."
+    sleep 10
+done
