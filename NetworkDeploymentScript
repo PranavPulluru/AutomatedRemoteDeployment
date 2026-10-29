@@ -31,7 +31,7 @@ while true; do
 
     if [[ "$LAT_MATCH" == true && "$LONG_MATCH" == true ]]; then
         echo "Goal location reached! Starting srsRAN..."
-        sudo srsepc  # Replace this with your srsRAN startup command
+        sudo srsepc
         break
     fi
 
