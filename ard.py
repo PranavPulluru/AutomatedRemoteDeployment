@@ -138,7 +138,7 @@ if __name__ == "__main__":
     deployment.reactive_recovery(cell_radius, terrestrial_config_id, number_of_UEs, supported_UEs)
 
     # Predictive Recovery
-    api_key = "209885a003d9240af1fa0f2696efb051"
+    api_key = "API KEY"
     location = "Houston"
     threshold = 0.7  # Trigger predictive recovery if disaster probability > 0.7
     deployment.predictive_recovery(api_key, location, threshold, cell_radius, terrestrial_config_id, number_of_UEs, supported_UEs)
