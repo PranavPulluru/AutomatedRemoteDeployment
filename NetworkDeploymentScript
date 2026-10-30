@@ -1,14 +1,12 @@
 #!/bin/bash
 
 # Goal latitude and longitude
-GOAL_LAT=37.7749    # Replace with your target latitude
-GOAL_LONG=-122.4194 # Replace with your target longitude
-TOLERANCE=0.0001    # Tolerance for comparing lat/long (adjust as needed)
+GOAL_LAT=37.7749    
+GOAL_LONG=-122.4194 
+TOLERANCE=0.0001
 
 # Function to get current GPS location
 get_current_location() {
-    # Here, assume GPS output is available in a file `/tmp/gps_data`
-    # Format: LAT,LONG
     cat /tmp/gps_data | awk -F',' '{print $1,$2}'
 }
 
